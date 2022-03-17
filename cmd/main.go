@@ -22,12 +22,17 @@ func main() {
 	}
 
 	for p := range in {
-		f := ipsearch.InternetDBLookup(in[p])
-		fmt.Printf("IP: %s\n", f.Ip)
-		fmt.Printf("Hostnames: %s\n", f.Hostnames)
+		f, err := ipsearch.InternetDBLookup(in[p])
+		if err != nil {
+			fmt.Printf("%s: error, %s\n", in[p], err)
+		}
+		if f.Ip != "" {
+			fmt.Printf("IP: %s\n", f.Ip)
+			fmt.Printf("Hostnames: %s\n", f.Hostnames)
 
-		for p := range f.Ports {
-			fmt.Println(f.Ports[p])
+			for p := range f.Ports {
+				fmt.Println(f.Ports[p])
+			}
 		}
 	}
 }
