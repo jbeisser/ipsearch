@@ -3,24 +3,28 @@ package main
 import (
 	"bufio"
 	"fmt"
+	"ipsearch"
 	"os"
 	"strings"
-
-	"ipsearch"
 )
 
 func main() {
-	// get IP from argv
-	//ip := os.Args[1]
-	reader := bufio.NewReader(os.Stdin)
-	s, _ := reader.ReadString('\n')
+	var in []string
 
-	s = strings.TrimSuffix(s, "\n")
-	ips := strings.Split(s, " ")
+	if len(os.Args) == 1 {
+		reader := bufio.NewReader(os.Stdin)
+		s, _ := reader.ReadString('\n')
+		s = strings.TrimSuffix(s, "\n")
+		in = strings.Split(s, " ")
 
-	for p := range ips {
-		f := ipsearch.InternetDBLookup(ips[p])
+	} else {
+		in = os.Args[1:]
+	}
+
+	for p := range in {
+		f := ipsearch.InternetDBLookup(in[p])
 		fmt.Printf("IP: %s\n", f.Ip)
+		fmt.Printf("Hostnames: %s\n", f.Hostnames)
 
 		for p := range f.Ports {
 			fmt.Println(f.Ports[p])
