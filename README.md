@@ -1,7 +1,7 @@
 `ipsearch`
 ----------
 
-Using the new Shodan InternetDB API, this stupid little thing will pull ports and IP info.
+Using the Shodan InternetDB and GeoDNS APIs, pull information about an IPAddress and associated hostnames (if any).
 
 It's stupid, and almost useful.
 
