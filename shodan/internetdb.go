@@ -1,10 +1,10 @@
-package ipsearch
+package shodan
 
 import (
 	"encoding/json"
 	"fmt"
-	"io/ioutil"
-	"net/http"
+	"io"
+	"ipsearch/http"
 )
 
 type Record struct {
@@ -18,23 +18,17 @@ type Record struct {
 
 func InternetDBLookup(ip string) (payload Record, err error) {
 
-	client := http.Client{}
-
-	req, err := http.NewRequest("GET", "https://internetdb.shodan.io/"+ip, nil)
+	resp, err := http.Get(internetdbUri + ip)
 	if err != nil {
 		fmt.Printf("the horror: %v", err)
 	}
 
-	resp, err := client.Do(req)
-	if err != nil {
-		fmt.Printf("the horror: %v\n", err)
-	}
 	if resp.StatusCode != 200 {
 		err := fmt.Errorf("%d: not found", resp.StatusCode)
 		return payload, err
 	}
 
-	body, err := ioutil.ReadAll(resp.Body)
+	body, err := io.ReadAll(resp.Body)
 	if err != nil {
 		fmt.Printf("the horror: %v\n", err)
 	}
